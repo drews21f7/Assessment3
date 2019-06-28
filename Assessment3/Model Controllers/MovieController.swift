@@ -61,7 +61,7 @@ class MovieController {
         
         url.appendPathComponent(movie.image)
         
-        guard let finalURL = components?.url else {completion(nil); return}
+        guard (components?.url) != nil else {completion(nil); return}
         
         URLSession.shared.dataTask(with: url) { (data, _, error) in
             if let error = error {
