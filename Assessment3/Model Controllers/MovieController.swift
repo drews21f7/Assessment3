@@ -15,7 +15,7 @@ class MovieController {
     static let baseURL = URL(string: "https://api.themoviedb.org/3/search/movie")
     
     static func fetchMovieFor(key: String, query: String, completion: @escaping ([Movie]?) -> Void) {
-        guard var url = baseURL else {completion(nil); return}
+        guard let url = baseURL else {completion(nil); return}
         
         var components = URLComponents(url: url, resolvingAgainstBaseURL: true)
         
@@ -46,6 +46,27 @@ class MovieController {
                 completion(nil)
                 return
             }
+        }.resume()
+    }
+    
+    static func fetchImageFor(movie: Movie, completion: @escaping (UIImage?) -> Void) {
+        
+        let url = movie.imageURL
+        
+        URLSession.shared.dataTask(with: url) { (data, _, error) in
+            if let error = error {
+                print ("Error fetching image data: \(error.localizedDescription)")
+                completion(nil)
+                return
+            }
+            guard let data = data else {
+                print("Image data doesn't equal data")
+                completion(nil)
+                return
+            }
+            
+            let image = UIImage(data: data)
+            completion(image)
         }.resume()
     }
 }
