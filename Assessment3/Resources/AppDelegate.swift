@@ -15,6 +15,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+//        MovieController.fetchMovieFor(key: "3426acb26cb2a609a0b58991b1295686", query: "Jack+Reacher") { (search) in
+//            print(search)
+//        } 
         // Override point for customization after application launch.
         return true
     }
