@@ -16,15 +16,7 @@ class MovieTableViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        MovieController.fetchMovieFor(query: "Shrek") { (moviesFromCompletion) in
-            if let unwrappedMovieItems = moviesFromCompletion {
-                self.movies = unwrappedMovieItems
-                DispatchQueue.main.async {
-                    self.tableView.reloadData()
-                }
-            }
-        }
-        //self.tableView.reloadData()
+        self.tableView.reloadData()
 
     }
 
