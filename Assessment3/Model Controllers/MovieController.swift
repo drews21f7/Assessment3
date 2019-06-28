@@ -14,7 +14,7 @@ class MovieController {
     
     static let baseURL = URL(string: "https://api.themoviedb.org/3/search/movie")
     
-    static func fetchMovieFor(key: String, query: String, completion: @escaping ([Movie]?) -> Void) {
+    static func fetchMovieFor(query: String, completion: @escaping ([Movie]?) -> Void) {
         guard let url = baseURL else {completion(nil); return}
         
         var components = URLComponents(url: url, resolvingAgainstBaseURL: true)
@@ -51,7 +51,17 @@ class MovieController {
     
     static func fetchImageFor(movie: Movie, completion: @escaping (UIImage?) -> Void) {
         
-        let url = movie.imageURL
+        let baseImageURL = URL(string: "https://image.tmdb.org/t/p/w92")
+        
+        guard var url = baseImageURL else {completion(nil); return}
+        
+        let components = URLComponents(url: url, resolvingAgainstBaseURL: true)
+        
+        //let imageURL = movie.image
+        
+        url.appendPathComponent(movie.image)
+        
+        guard let finalURL = components?.url else {completion(nil); return}
         
         URLSession.shared.dataTask(with: url) { (data, _, error) in
             if let error = error {

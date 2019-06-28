@@ -16,7 +16,15 @@ class MovieTableViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.tableView.reloadData()
+        MovieController.fetchMovieFor(query: "Shrek") { (moviesFromCompletion) in
+            if let unwrappedMovieItems = moviesFromCompletion {
+                self.movies = unwrappedMovieItems
+                DispatchQueue.main.async {
+                    self.tableView.reloadData()
+                }
+            }
+        }
+        //self.tableView.reloadData()
 
     }
 
@@ -37,6 +45,12 @@ class MovieTableViewController: UITableViewController {
         cell.titleLabel.text = movie.title
         cell.ratingLabel.text = "\(movie.rating)"
         cell.overviewTextView.text = movie.overview
+        
+        MovieController.fetchImageFor(movie: movie) { (image) in
+            DispatchQueue.main.async {
+                cell.movieImageView.image = image
+            }
+        }
 
         // Configure the cell...
 
@@ -48,9 +62,10 @@ extension MovieTableViewController: UISearchBarDelegate {
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         guard let searchQuery = searchBar.text, searchQuery != "" else { return }
         
-        MovieController.fetchMovieFor(key: "3426acb26cb2a609a0b58991b1295686", query: searchQuery) { (moviesFromCompletion) in
+        MovieController.fetchMovieFor(query: searchQuery) { (moviesFromCompletion) in
             if let unwrappedMovies = moviesFromCompletion {
                 self.movies = unwrappedMovies
+                //print (self.movies)
                 DispatchQueue.main.async {
                     self.tableView.reloadData()
                 }
